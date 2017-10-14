@@ -5,8 +5,10 @@ public class Student {
     ex. 009529299, 82736735...
  */
     private String studentID;
+    private int submissions;
 
     Student(String id){
+        submissions = 0;
         if(id.length() == 9){
             this.studentID = id;
             System.out.println("ID added !");
@@ -21,5 +23,13 @@ public class Student {
 
     public void setStudentID(String studentID) {
         this.studentID = studentID;
+    }
+
+    public void submissionCount(){
+        submissions++;
+    }
+
+    public int getSubmissions(){
+        return submissions;
     }
 }

@@ -11,29 +11,61 @@ public class SimulationDriver {
 
         System.out.println("***iVote Simulation***");
 
-        // TEST QUESTION
-        List<String> answer = new ArrayList<>();
-        answer.add("c");
-        List<String> answerOptions = new ArrayList<>();
-        answerOptions.add("a. cat");
-        answerOptions.add("b. chicken");
-        answerOptions.add("c. hog");
-        answerOptions.add("d. shark");
+        // Question Simulation
+        String questionSingle = "Which of these choices rhymes with dog?";
 
-        SingleChoice newChoice = new SingleChoice("Which of these rhymes with dog ?",answer, answerOptions);
+        List<String> singleAnswer = new ArrayList<>();
+        List<String> singleOptions = new ArrayList<>();
 
+        singleAnswer.add("c");
 
+        singleOptions.add("a. cat");
+        singleOptions.add("b. chicken");
+        singleOptions.add("c. hog");
+        singleOptions.add("d. shark");
 
-        Student studentOne = new Student("009529299");
-        System.out.println("Student ID is : " + studentOne.getStudentID());
-        System.out.println("Question:\n");
-        // question
-        System.out.println(newChoice.getQuestion());
-        //choices
-        newChoice.printList();
-        System.out.println("Answer: " + newChoice.getAnswer());
+        Question singleQuestiontype = new SingleChoice(questionSingle,singleAnswer,singleOptions);
 
+        // multiple choice question
+        String questionMulti = "Which of these choices represents a Java primitive type? (pick more than one)";
 
+        List<String> multiAnswers = new ArrayList<String>();
+        List<String> multiOptions = new ArrayList<String>();
 
+        multiAnswers.add("a");
+        multiAnswers.add("b");
+        multiAnswers.add("c");
+
+        multiOptions.add("a. int");
+        multiOptions.add("b. String");
+        multiOptions.add("c. char");
+        multiOptions.add("d. Array");
+        multiOptions.add("e. HashMap");
+
+        Question multiQuestiontype = new MultipleChoice(questionMulti,multiAnswers,multiOptions);
+
+        // single question
+        System.out.println("Single Question: " + singleQuestiontype.getQuestion());
+        singleQuestiontype.printChoicelist();
+        System.out.println("Single Answer: " + singleQuestiontype.getAnswer());
+
+        System.out.println("");
+
+        //multi question
+        System.out.println("Multi Question: " + multiQuestiontype.getQuestion());
+        multiQuestiontype.printChoicelist();
+        System.out.println("Multi Answer: " + multiQuestiontype.getAnswer());
+
+        simulateVoting(singleQuestiontype, multiQuestiontype);
+    }
+
+    public static void simulateVoting(Question singleType, Question mutliType){
+        Student pedro = new Student("009529299");
+        System.out.println("Student ID is : " + pedro.getStudentID());
+        System.out.println("Question(s):\n");
+
+        IVoteService serviceThread = new IVoteService(singleType);
+        serviceThread.submit(pedro);
+        serviceThread.submit(pedro);
     }
 }

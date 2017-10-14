@@ -55,7 +55,7 @@ public abstract class Question {
     /**
      * helper method to print out content in answerChoices list
      */
-    public void printList(){
+    public void printChoicelist(){
         Iterator iter = answerChoices.iterator();
         while(iter.hasNext()){
             System.out.println(iter.next());
