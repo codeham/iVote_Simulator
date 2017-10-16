@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SimulationDriver {
     public static void main(String[] args){
@@ -44,28 +43,68 @@ public class SimulationDriver {
 
         Question multiQuestiontype = new MultipleChoice(questionMulti,multiAnswers,multiOptions);
 
-        // single question
+        // single choice question
         System.out.println("Single Question: " + singleQuestiontype.getQuestion());
         singleQuestiontype.printChoicelist();
         System.out.println("Single Answer: " + singleQuestiontype.getAnswer());
 
         System.out.println("");
 
-        //multi question
+        // multi question
         System.out.println("Multi Question: " + multiQuestiontype.getQuestion());
         multiQuestiontype.printChoicelist();
         System.out.println("Multi Answer: " + multiQuestiontype.getAnswer());
 
-        simulateVoting(singleQuestiontype, multiQuestiontype);
+        // simulate iVoting
+        simulateVoting(singleQuestiontype);
+//        simulateVoting(multiQuestiontype);
     }
 
-    public static void simulateVoting(Question singleType, Question mutliType){
-        Student pedro = new Student("009529299");
-        System.out.println("Student ID is : " + pedro.getStudentID());
-        System.out.println("Question(s):\n");
+    public static void simulateVoting(Question questionType){
+        Random rand = new Random();
+        /**
+         * randomized number of students ranging from 25-50
+         * Max 50 student classroom
+         * Min 25 student classroom
+         */
+        int randomInt = rand.nextInt((50 - 25) + 1) + 25;
 
-        IVoteService serviceThread = new IVoteService(singleType);
-        serviceThread.submit(pedro);
-        serviceThread.submit(pedro);
+        Student[] randStudents = new Student[randomInt];
+        System.out.println("number of random students : " + randomInt);
+
+        int[] idNumbers = uniqueNums(randomInt);
+
+        // populate array of students with unique ID
+        for(int i = 0; i < randStudents.length; i++){
+            randStudents[i] = new Student();
+            randStudents[i].setStudentID(String.valueOf(idNumbers[i]));
+            String x = randStudents[i].getStudentID();
+            System.out.println(x);
+        }
+
+        // submit players answers, along with ID
+        // randomize answers from the list of options
+        // simulate a random number of answers to choose from depending on the type of question (Single or Multiple)
+        
+
+
+
+    }
+
+    public static List<String> simulateVoting(){
+
+        return new ArrayList<String>();
+    }
+
+    public static int[] uniqueNums(int randomInt){
+        Random rand = new Random();
+        int[] nums = new int[randomInt];
+        for (int i = 0; i < nums.length; i++) {
+            int idMaker = rand.nextInt(90000) + 10000;
+            nums[i] = idMaker;
+        }
+        Collections.shuffle(Arrays.asList(nums));
+//        System.out.println(Arrays.toString(nums));
+        return nums;
     }
 }

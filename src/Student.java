@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Random;
+
 public class Student {
 /*
     Students will be identified with a numeric ID of 9 digits
@@ -6,15 +9,19 @@ public class Student {
  */
     private String studentID;
     private int submissions;
+    private List<String> studentAnswers;
 
-    Student(String id){
-        submissions = 0;
-        if(id.length() == 9){
-            this.studentID = id;
-            System.out.println("ID added !");
-        }else{
-            System.out.println("Error: not a valid student ID");
-        }
+    public Student(){
+
+    }
+
+    public String createId(){
+        //create randomized ID for student ranging from 00000-99999
+        Random rand = new Random();
+        int idMaker = rand.nextInt(90000) + 10000;
+        String createId = String.valueOf(idMaker);
+
+        return  createId;
     }
 
     public String getStudentID() {
@@ -25,6 +32,10 @@ public class Student {
         this.studentID = studentID;
     }
 
+    public void addStudentAnswers(List<String> studentAnswers){
+        this.studentAnswers = studentAnswers;
+    }
+
     public void submissionCount(){
         submissions++;
     }
@@ -32,4 +43,5 @@ public class Student {
     public int getSubmissions(){
         return submissions;
     }
+
 }
