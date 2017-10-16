@@ -17,7 +17,7 @@ public class IVoteService {
     /**
      *
      */
-    private HashMap<String, List<String>> resultsTable;
+    public HashMap<String, List<String>> resultsTable;
     /**
      * default constructor for ivote service
      *
@@ -39,9 +39,7 @@ public class IVoteService {
             //override submission
             resultsTable.replace(student.getStudentID(), answers);
         }
-
         resultsTable.put(student.getStudentID(), answers);
-        // check for correct answers
     }
 
     public boolean checkDuplicate(int submissionCount){
@@ -50,6 +48,11 @@ public class IVoteService {
             return false;
         }
         System.out.println("Submission success !");
+        System.out.println("----------------------");
         return true;
+    }
+
+    public HashMap<String, List<String>> getResultsTable() {
+        return resultsTable;
     }
 }

@@ -56,38 +56,69 @@ public class SimulationDriver {
         System.out.println("Multi Answer: " + multiQuestiontype.getAnswer());
 
         // simulate iVoting
-        simulateVoting(singleQuestiontype);
+        simulateVoting(singleQuestiontype, 1);
 //        simulateVoting(multiQuestiontype);
     }
 
-    public static void simulateVoting(Question questionType){
-        Random rand = new Random();
+    public static void simulateVoting(Question questionType, int questionFlag){
         /**
          * randomized number of students ranging from 25-50
          * Max 50 student classroom
          * Min 25 student classroom
          */
-        int randomInt = rand.nextInt((50 - 25) + 1) + 25;
+        IdGenerator generateIDs = new IdGenerator();
+        int[] idNumbers = generateIDs.getIdNumbers();
 
-        Student[] randStudents = new Student[randomInt];
-        System.out.println("number of random students : " + randomInt);
-
-        int[] idNumbers = uniqueNums(randomInt);
+        final int totalStudents = generateIDs.getStudentCount();
+        Student[] randStudents = new Student[totalStudents];
+//        System.out.println("number of random students : " + generateIDs.getRandomStudents());
 
         // populate array of students with unique ID
         for(int i = 0; i < randStudents.length; i++){
             randStudents[i] = new Student();
-            randStudents[i].setStudentID(String.valueOf(idNumbers[i]));
-            String x = randStudents[i].getStudentID();
-            System.out.println(x);
+            String idValue = String.valueOf(idNumbers[i]);
+            randStudents[i].setStudentID(idValue);
         }
 
         // submit players answers, along with ID
         // randomize answers from the list of options
         // simulate a random number of answers to choose from depending on the type of question (Single or Multiple)
-        
 
+        Random rand = new Random();
+        IVoteService serviceThread;
+        List<String> answerOptions = new ArrayList<String>();
 
+        if(questionFlag == 1) {
+            // single choice question
+            // single choice is going to generate only one answer from the list of choices
+            // randomize a number based on the list size of a single choice question
+            // pick an index at random in that list
+
+            serviceThread = new IVoteService(questionType);
+            answerOptions = questionType.getAnswerChoices();
+            System.out.println(answerOptions);
+
+//            List<String> randomAnswer = new ArrayList<String>();
+
+            for(int j = 0; j < totalStudents; j++){
+                String pickRandom = answerOptions.get(rand.nextInt(answerOptions.size()));
+                List<String> randomAnswer = new ArrayList<String>();
+                randomAnswer.add(pickRandom);
+                serviceThread.submit(randStudents[j], randomAnswer);
+            }
+
+            //TESTING PURPOSES
+            System.out.println(serviceThread.getResultsTable());
+
+            for(int i = 0; i < totalStudents; i++){
+                System.out.println( serviceThread.getResultsTable().get(randStudents[i].getStudentID()).toString());
+            }
+
+        }
+    }
+
+    public static void generateAnswers(){
+        List<String> answerList = new ArrayList<String>();
 
     }
 
@@ -96,15 +127,4 @@ public class SimulationDriver {
         return new ArrayList<String>();
     }
 
-    public static int[] uniqueNums(int randomInt){
-        Random rand = new Random();
-        int[] nums = new int[randomInt];
-        for (int i = 0; i < nums.length; i++) {
-            int idMaker = rand.nextInt(90000) + 10000;
-            nums[i] = idMaker;
-        }
-        Collections.shuffle(Arrays.asList(nums));
-//        System.out.println(Arrays.toString(nums));
-        return nums;
-    }
 }

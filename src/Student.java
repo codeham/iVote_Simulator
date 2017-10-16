@@ -12,16 +12,7 @@ public class Student {
     private List<String> studentAnswers;
 
     public Student(){
-
-    }
-
-    public String createId(){
-        //create randomized ID for student ranging from 00000-99999
-        Random rand = new Random();
-        int idMaker = rand.nextInt(90000) + 10000;
-        String createId = String.valueOf(idMaker);
-
-        return  createId;
+        submissions = 0;
     }
 
     public String getStudentID() {
