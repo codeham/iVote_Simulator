@@ -43,21 +43,9 @@ public class SimulationDriver {
 
         Question multiQuestiontype = new MultipleChoice(questionMulti,multiAnswers,multiOptions);
 
-        // single choice question
-        System.out.println("Single Question: " + singleQuestiontype.getQuestion());
-        singleQuestiontype.printChoicelist();
-        System.out.println("Single Answer: " + singleQuestiontype.getAnswer());
-
-        System.out.println("");
-
-        // multi question
-        System.out.println("Multi Question: " + multiQuestiontype.getQuestion());
-        multiQuestiontype.printChoicelist();
-        System.out.println("Multi Answer: " + multiQuestiontype.getAnswer());
-
         // simulate iVoting
         simulateVoting(singleQuestiontype, 1);
-//        simulateVoting(multiQuestiontype);
+        simulateVoting(multiQuestiontype, 2);
     }
 
     public static void simulateVoting(Question questionType, int questionFlag){
@@ -93,38 +81,69 @@ public class SimulationDriver {
             // single choice is going to generate only one answer from the list of choices
             // randomize a number based on the list size of a single choice question
             // pick an index at random in that list
+            // single choice question
+            System.out.println();
+            System.out.println("- Single Choice Question -");
+            System.out.println(questionType.getQuestion());
+        }else{
+            // multiple output
+            System.out.println();
+            System.out.println("- Multiple Choice Question -");
+            System.out.println(questionType.getQuestion());
+        }
+            // Begin Simulation
+            questionType.printChoicelist();
+            System.out.println("Answer: " + questionType.getAnswer());
+            System.out.println();
+            System.out.println("**Simulation**");
+            System.out.println("(" + totalStudents + " Students" + ")");
+            System.out.println();
 
             serviceThread = new IVoteService(questionType);
             answerOptions = questionType.getAnswerChoices();
-            System.out.println(answerOptions);
-
-//            List<String> randomAnswer = new ArrayList<String>();
 
             for(int j = 0; j < totalStudents; j++){
-                String pickRandom = answerOptions.get(rand.nextInt(answerOptions.size()));
-                List<String> randomAnswer = new ArrayList<String>();
-                randomAnswer.add(pickRandom);
+                List<String> randomAnswer = pickRandom(questionFlag, answerOptions);
                 serviceThread.submit(randStudents[j], randomAnswer);
             }
 
             //TESTING PURPOSES
-            System.out.println(serviceThread.getResultsTable());
-
             for(int i = 0; i < totalStudents; i++){
-                System.out.println( serviceThread.getResultsTable().get(randStudents[i].getStudentID()).toString());
+                System.out.println("Student: " + randStudents[i].getStudentID());
+                System.out.println("Answer: " + serviceThread.getResultsTable().get(randStudents[i].getStudentID()).toString());
+                System.out.println("---------------------------");
             }
 
+
+    }
+
+    public static List<String> pickRandom(int questionType, List<String> answerOptions){
+        Random rand = new Random();
+        List<String> randomAnswer = new ArrayList<String>();
+
+        if(questionType == 1){
+            String pickRandom = answerOptions.get(rand.nextInt(answerOptions.size()));
+            randomAnswer.add(pickRandom);
+        }else{
+            // pick multiple
+            // edge cases -> random picker can possibly pick all multiple choice answers, can randomize repetitve options
+            List<String> tempList = new ArrayList<String>();
+            //use a set
+            int choiceSize = answerOptions.size();
+            for(int i = 0; i < choiceSize; i++){
+                String pickRandom = answerOptions.get(rand.nextInt(answerOptions.size()));
+                tempList.add(pickRandom);
+            }
+            Set<String> answersSet = new HashSet<String>(tempList);
+
+            return new ArrayList<String>(answersSet);
         }
+
+        return randomAnswer;
     }
 
     public static void generateAnswers(){
         List<String> answerList = new ArrayList<String>();
 
     }
-
-    public static List<String> simulateVoting(){
-
-        return new ArrayList<String>();
-    }
-
 }

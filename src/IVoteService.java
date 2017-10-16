@@ -47,12 +47,11 @@ public class IVoteService {
             System.out.println("Only one submission allowed, most recent submission will override");
             return false;
         }
-        System.out.println("Submission success !");
-        System.out.println("----------------------");
         return true;
     }
 
     public HashMap<String, List<String>> getResultsTable() {
         return resultsTable;
     }
+
 }
