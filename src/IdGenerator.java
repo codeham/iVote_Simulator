@@ -10,6 +10,7 @@ public class IdGenerator {
     public IdGenerator() {
         rand = new Random();
         studentCount = rand.nextInt((50 - 25) + 1) + 25;
+//        studentCount = rand.nextInt((10 - 1) + 1) + 10;
         idNumbers = makeUniqueIDs(studentCount);
     }
 
