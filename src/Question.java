@@ -1,5 +1,11 @@
 import java.util.Iterator;
 import java.util.List;
+
+/**
+ * Question abstract class
+ * Design choice: saves from repetitive code since both
+ * Single & Multiple contain similar implementations
+ */
 public abstract class Question {
     /**
      * holds the main question created by the simulationDriver

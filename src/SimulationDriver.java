@@ -70,22 +70,17 @@ public class SimulationDriver {
         // submit players answers, along with ID
         // randomize answers from the list of options
         // simulate a random number of answers to choose from depending on the type of question (Single or Multiple)
-
         Random rand = new Random();
         IVoteService serviceThread;
         List<String> answerOptions = new ArrayList<String>();
 
         if(questionIdentifier == 1) {
             // single choice question
-            // single choice is going to generate only one answer from the list of choices
-            // randomize a number based on the list size of a single choice question
-            // pick an index at random in that list
-            // single choice question
             System.out.println();
             System.out.println("- Single Choice Question -");
             System.out.println(questionType.getQuestion());
         }else{
-            // multiple output
+            // multiple choice question
             System.out.println();
             System.out.println("- Multiple Choice Question -");
             System.out.println(questionType.getQuestion());
@@ -106,7 +101,7 @@ public class SimulationDriver {
             serviceThread.submit(randStudents[j], randomAnswer);
         }
 
-        //TESTING PURPOSES
+        // Output Simulation Actions
         for(int i = 0; i < totalStudents; i++){
             System.out.println("Student: " + randStudents[i].getStudentID());
             System.out.println("Answer: " + serviceThread.getResultsTable().get(randStudents[i].getStudentID()).toString());
@@ -115,10 +110,15 @@ public class SimulationDriver {
 
         //print out statistics for the results
         serviceThread.printStats();
-
-
     }
 
+    /**
+     * Helper method that randomizes an integer based on the size of the answer(s) options list,
+     * this number is used to randomize an answer in the list
+     * @param questionType
+     * @param answerOptions
+     * @return a list containing randomized answer(s) as Strings
+     */
     public static List<String> pickRandom(int questionType, List<String> answerOptions){
         Random rand = new Random();
         List<String> randomAnswer = new ArrayList<String>();
@@ -128,14 +128,13 @@ public class SimulationDriver {
             randomAnswer.add(pickRandom);
         }else{
             // pick multiple
-            // edge cases -> random picker can possibly pick all multiple choice answers, can randomize repetitve options
             List<String> tempList = new ArrayList<String>();
-            //use a set
             int choiceSize = answerOptions.size();
             for(int i = 0; i < choiceSize; i++){
                 String pickRandom = answerOptions.get(rand.nextInt(answerOptions.size()));
                 tempList.add(pickRandom);
             }
+            // use set to rid list of repeat choices
             Set<String> answersSet = new HashSet<String>(tempList);
 
             return new ArrayList<String>(answersSet);
