@@ -75,6 +75,8 @@ public class IVoteService {
      * this method prints resulting stats of the program
      * includes: number count of each answer choice used &
      * resulting total of correct answers by Student's
+     * note: this is a very inefficient way to perform this table search but
+     * based on the limit of students allowed it should not carry any overhead
      */
     public void printStats(){
         System.out.println();
@@ -100,6 +102,8 @@ public class IVoteService {
 
     /**
      * helper method to determine correct answer results
+     * the reason for temp Lists is to not let Collections
+     * modify values inside the resultsTable hashmap
      * @return correct answer of the simulation
      */
     public int correctResults(){
